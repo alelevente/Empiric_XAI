@@ -128,4 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+01_data/train/*.csv
+01_data/test/*.csv
 01_data/prepared_data.csv
