@@ -8,14 +8,17 @@ def create_model(X):
         #keras.layers.Dropout(.25),
         #keras.layers.Dense(512, activation="sigmoid"),
         keras.layers.Dense(128, activation="sigmoid", ),
-        keras.layers.Dense(256, activation="relu", ),
-        #keras.layers.Dense(256, activation=ACTIVATION, kernel_regularizer="l2"),
-        #keras.layers.Dense(512, activation=ACTIVATION, kernel_regularizer="l2"),
+        #keras.layers.Dense(256, activation="relu", ),
+        #keras.layers.Dense(512, activation="relu", ),
+        #keras.layers.Dense(1024, activation="relu", ),
+        #keras.layers.Dense(1024, activation="relu", ),
+        #keras.layers.Dense(512, activation="relu",),
+        #keras.layers.Dense(256, activation="relu",),
         #keras.layers.Dropout(.25),
-        keras.layers.Dense(128, activation="relu",),
+        keras.layers.Dense(128, activation="relu", ),
         #keras.layers.Dropout(.25),
-        keras.layers.Dense(32, activation="relu",),
-        keras.layers.Dense(1)
+        keras.layers.Dense(64, activation="relu", ),
+        keras.layers.Dense(1, )#activation="sigmoid")
     ])
     
     return model

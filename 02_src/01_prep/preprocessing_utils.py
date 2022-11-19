@@ -16,7 +16,7 @@ if gpus:
         print(e)
 
         
-def categorical_encoding_and_scaling(x, categorical, numeric):
+def categorical_encoding_and_scaling(x, categorical, numeric_mean_std, numeric_max):
     '''
         One-hot-encoding of categorical data, and scaling numeric values.
         Parameters:
@@ -43,12 +43,17 @@ def categorical_encoding_and_scaling(x, categorical, numeric):
                                                  output_mode="one_hot")
         cat_coded = encoder(values) if cat_coded is None else np.hstack([cat_coded, encoder(values)])
         
-    #numerical encoding:
+    #-mean/std numerical encoding:
     num_scaled = None
-    for num in numeric:
+    for num in numeric_mean_std:
         scaler = tf.keras.layers.Normalization(axis=None)
         scaler.adapt(x[num])
         num_scaled = scaler(x[num]).numpy().T if num_scaled is None else np.hstack([num_scaled, scaler(x[num]).numpy().T])
+    #/max encoding:
+    for num in numeric_max:
+        print((x[num]/max(x[num])).shape)
+        print(num_scaled.shape)
+        num_scaled = np.hstack([num_scaled, np.array(x[num]/max(x[num])).reshape((len(num_scaled), 1))])
         
     #creating output:
     return np.hstack([cat_coded, num_scaled])
