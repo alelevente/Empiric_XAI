@@ -56,7 +56,7 @@ def categorical_encoding_and_scaling(x, categorical, numeric_mean_std, numeric_m
         num_scaled = np.hstack([num_scaled, np.array(x[num]/max(x[num])).reshape((len(num_scaled), 1))])
         
     #creating output:
-    return np.hstack([cat_coded, num_scaled])
+    return np.hstack([cat_coded, num_scaled]) if not(num_scaled is None) else cat_coded.numpy()
 
 def normalize_series(y):
     scaler = tf.keras.layers.Normalization(axis=None)
