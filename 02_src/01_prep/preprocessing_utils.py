@@ -3,7 +3,7 @@ import numpy as np
 
 import tensorflow as tf
 
-gpus = tf.config.list_physical_devices('GPU')
+'''gpus = tf.config.list_physical_devices('GPU')
 if gpus:
     try:
         # Currently, memory growth needs to be the same across GPUs
@@ -13,7 +13,7 @@ if gpus:
             print(len(gpus), "Physical GPUs,", len(logical_gpus), "Logical GPUs")
     except RuntimeError as e:
     # Memory growth must be set before GPUs have been initialized
-        print(e)
+        print(e)'''
 
         
 def categorical_encoding_and_scaling(x, categorical, numeric_mean_std, numeric_max):
@@ -28,6 +28,7 @@ def categorical_encoding_and_scaling(x, categorical, numeric_mean_std, numeric_m
     '''
     #categorical encoding:
     cat_coded = None
+    encoding_dict_answer = {}
     for category in categorical:
         #integer category encoding:
         codes = x[category].unique()
@@ -37,7 +38,8 @@ def categorical_encoding_and_scaling(x, categorical, numeric_mean_std, numeric_m
             code_dictionary[code] = i
         for _,r in x.iterrows():
             values.append(code_dictionary[r[category]])
-
+        encoding_dict_answer[category] = code_dictionary
+        
         #one-hot-conding:
         encoder = tf.keras.layers.CategoryEncoding(num_tokens=len(code_dictionary),
                                                  output_mode="one_hot")
@@ -56,7 +58,7 @@ def categorical_encoding_and_scaling(x, categorical, numeric_mean_std, numeric_m
         num_scaled = np.hstack([num_scaled, np.array(x[num]/max(x[num])).reshape((len(num_scaled), 1))])
         
     #creating output:
-    return np.hstack([cat_coded, num_scaled]) if not(num_scaled is None) else cat_coded.numpy()
+    return np.hstack([cat_coded, num_scaled]) if not(num_scaled is None) else cat_coded.numpy(), encoding_dict_answer
 
 def normalize_series(y):
     scaler = tf.keras.layers.Normalization(axis=None)
